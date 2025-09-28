@@ -14,8 +14,13 @@ html_theme = 'furo'
 html_logo = '../assets/rediraffe_logo_128.png'
 
 extensions = [
+    'sphinx.ext.intersphinx',
     'sphinxext.rediraffe',
 ]
+
+intersphinx_mapping = {
+    'sphinx': ('https://www.sphinx-doc.org/', None),
+}
 
 rediraffe_redirects = {
     'other.rst': 'index.rst',
