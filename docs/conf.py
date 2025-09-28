@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import sphinxext.rediraffe
+
 copyright = (
     '2020, FIRST',
     '2025-%Y, the Sphinx developers',
 )
+
+version = release = sphinxext.rediraffe.__version__
 
 master_doc = 'index'
 project = 'sphinxext-rediraffe'
