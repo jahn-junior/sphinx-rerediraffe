@@ -19,7 +19,7 @@ else:
     TESTS_ROOT = path(__file__).abspath().parent
 
 
-pytest_plugins = "sphinx.testing.fixtures"
+pytest_plugins = 'sphinx.testing.fixtures'
 
 
 def del_rw(action, name, exc):
@@ -77,9 +77,9 @@ def app_init_repo(make_app, app_params):
     args, kwargs = app_params
 
     srcdir = None
-    if "srcdir" in kwargs:
-        srcdir = kwargs["srcdir"]
-    elif "buildername" in kwargs:
+    if 'srcdir' in kwargs:
+        srcdir = kwargs['srcdir']
+    elif 'buildername' in kwargs:
         srcdir = args[1]
     else:
         srcdir = args[0]
@@ -91,29 +91,29 @@ def app_init_repo(make_app, app_params):
         with suppress(subprocess.CalledProcessError):
             subprocess.check_output(
                 (
-                    "git",
-                    "-c",
+                    'git',
+                    '-c',
                     'user.name="sphinxext-linkcheckdiff test runner"',
-                    "-c",
+                    '-c',
                     'user.email="NONE"',
                     *cmd,
                 ),
                 cwd=src_path,
             )
 
-    git("init")
+    git('init')
 
-    src_item_paths = list(src_path.glob("*"))
+    src_item_paths = list(src_path.glob('*'))
 
     commits = []
 
     for item_path in src_item_paths:
-        if not item_path.name.startswith("HEAD"):
+        if not item_path.name.startswith('HEAD'):
             continue
 
         commit_num = None
 
-        sq_idx = item_path.name.find("~")
+        sq_idx = item_path.name.find('~')
         if sq_idx != -1:
             commit_num = int(item_path.name[sq_idx + 1 :])
         else:
@@ -124,21 +124,21 @@ def app_init_repo(make_app, app_params):
     commits.sort(key=lambda tup: tup[1], reverse=True)
 
     for commit in commits:
-        files = list(src_path.glob("*"))
+        files = list(src_path.glob('*'))
 
         for file in files:
             if file not in src_item_paths:
                 delete(file)
 
-        for file in (src_path / commit[0]).glob("*"):
+        for file in (src_path / commit[0]).glob('*'):
             new_path = file.parent.parent / file.name
             file.rename(new_path)
 
-        git("add", ".")
+        git('add', '.')
         for path in src_item_paths:
-            git("rm", "--cached", "-r", path)
+            git('rm', '--cached', '-r', path)
 
-        git("commit", "-m", f"Apply {commit[0]}")
+        git('commit', '-m', f'Apply {commit[0]}')
 
         delete(src_path / commit[0])
 
@@ -146,14 +146,14 @@ def app_init_repo(make_app, app_params):
 
 
 def pytest_configure(config):
-    config.addinivalue_line("markers", "sphinx")
+    config.addinivalue_line('markers', 'sphinx')
 
 
 def rel2url(outdir, path):
-    return "file://" + str((Path(outdir) / path).resolve())
+    return 'file://' + str((Path(outdir) / path).resolve())
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def sb_(request):
     """Same as the sb fixture but with a session scope"""
     from seleniumbase import BaseCase
@@ -169,7 +169,7 @@ def sb_(request):
         def base_method(self):
             pass
 
-    sb = BaseClass("base_method")
+    sb = BaseClass('base_method')
     sb.setUp()
     sb._needs_tearDown = True
     sb_config._sb_node[request.node.nodeid] = sb

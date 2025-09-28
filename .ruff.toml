@@ -3,7 +3,7 @@ line-length = 88
 output-format = "full"
 
 [format]
-quote-style = "double"
+quote-style = "single"
 docstring-code-format = true
 
 [lint]
