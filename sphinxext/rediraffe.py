@@ -16,6 +16,9 @@ from sphinx.errors import ExtensionError
 from sphinx.util import logging
 from sphinx.util.console import green, red, yellow  # pylint: disable=no-name-in-module
 
+__version__ = "0.2.7"
+version_info = (0, 2, 7)
+
 logger = logging.getLogger(__name__)
 
 DEFAULT_REDIRAFFE_TEMPLATE = Template(

@@ -1,4 +1,3 @@
 sphinx
 jinja2
-wheel<43
-setuptools<70
+build>=1

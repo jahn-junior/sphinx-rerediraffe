@@ -1,49 +1,65 @@
-import subprocess
-import setuptools
+[build-system]
+requires = ["flit_core>=3.12"]
+build-backend = "flit_core.buildapi"
 
-try:
-    ret = subprocess.check_output(
-        "git describe --tags --abbrev=0",
-        shell=True,
-    )
-    version = ret.decode("utf-8").strip()
-except:
-    version = "main"
+# project metadata
+[project]
+name = "sphinxext-rediraffe"
+description = "Sphinx Extension that redirects non-existent pages to working pages"
+readme = "README.md"
+urls.Code = "https://github.com/sphinx-doc/sphinxext-rediraffe/"
+urls.Documentation = "https://sphinxext-rediraffe.readthedocs.io/"
+urls.Download = "https://pypi.org/project/sphinxext-rediraffe/"
+urls.Homepage = "https://github.com/sphinx-doc/sphinxext-rediraffe/"
+urls."Issue tracker" = "https://github.com/sphinx-doc/sphinxext-rediraffe/issues"
+license = "MIT"
+license-files = [
+    "LICENCE.rst",
+]
+requires-python = ">=3.8"
 
-with open("README.md", "r", encoding="utf-8") as readme:
-    long_description = readme.read()
+# Classifiers list: https://pypi.org/classifiers/
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Plugins",
+    "Environment :: Web Environment",
+    "Framework :: Sphinx :: Extension",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python",
+    "Topic :: Documentation :: Sphinx",
+    "Topic :: Documentation",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Text Processing",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "Sphinx>=4.0",
+]
+dynamic = ["version"]
 
-setuptools.setup(
-    name="sphinxext-rediraffe",
-    version=version,
-    author="Vasista Vovveti",
-    author_email="vasistavovveti@gmail.com",
-    description="Sphinx Extension that redirects non-existent pages to working pages.",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/wpilibsuite/sphinxext-rediraffe",
-    packages=["sphinxext"],
-    install_requires=["sphinx>=4.0"],
-    classifiers=[
-        "Environment :: Plugins",
-        "Environment :: Web Environment",
-        "Framework :: Sphinx :: Extension",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
-        "Natural Language :: English",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python",
-        "Topic :: Documentation :: Sphinx",
-        "Topic :: Documentation",
-        "Topic :: Software Development :: Documentation",
-        "Topic :: Text Processing",
-        "Topic :: Utilities",
-    ],
-    python_requires=">=3.8",
-    include_package_data=True,
-)
+[[project.authors]]
+name = "Vasista Vovveti"
+email = "vasistavovveti@gmail.com"
+
+[tool.flit.module]
+name = "sphinxext.rediraffe"
+
+[tool.flit.sdist]
+include = [
+    # Documentation
+    "docs/",
+    # Tests
+    "tests/",
+    "test-requirements.txt",
+    "tox.ini",
+]
+exclude = [
+    "docs/_build",
+]
