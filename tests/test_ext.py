@@ -1,14 +1,14 @@
+import logging
+import shutil
+from pathlib import Path
+
 import pytest
 import seleniumbase
+from conftest import rel2url
 from seleniumbase import BaseCase
-from sphinx.testing.path import path
 from sphinx.application import Sphinx
 from sphinx.errors import ExtensionError
-from pathlib import Path
-import shutil
-import logging
-
-from conftest import rel2url
+from sphinx.testing.path import path
 
 
 @pytest.fixture(scope="module")

@@ -1,9 +1,9 @@
 import json
-from os import rename
 import re
 import subprocess
+from os import rename
 from os.path import relpath
-from pathlib import Path, PurePath, PureWindowsPath, PurePosixPath
+from pathlib import Path, PurePath, PurePosixPath, PureWindowsPath
 from typing import Any, Dict, List, Union
 
 from jinja2 import Environment, FileSystemLoader, Template

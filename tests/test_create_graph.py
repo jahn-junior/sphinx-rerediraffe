@@ -1,6 +1,7 @@
-from sphinxext.rediraffe import create_graph
 import pytest
 from sphinx.errors import ExtensionError
+
+from sphinxext.rediraffe import create_graph
 
 
 def test_create_graph(tmp_path):

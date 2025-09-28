@@ -1,13 +1,14 @@
-from typing import Dict, List, Union
-from sphinx.testing.path import path
-import pytest
-import subprocess
-from pathlib import Path
 import os
-import stat
 import shutil
+import stat
+import subprocess
 from contextlib import suppress
+from pathlib import Path
+from typing import Dict, List, Union
+
+import pytest
 from seleniumbase import config as sb_config
+from sphinx.testing.path import path
 
 pytest_plugins = "sphinx.testing.fixtures"
 

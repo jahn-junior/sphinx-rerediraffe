@@ -1,6 +1,7 @@
-from sphinxext.rediraffe import create_simple_redirects
 import pytest
 from sphinx.errors import ExtensionError
+
+from sphinxext.rediraffe import create_simple_redirects
 
 
 def test_create_simple_redirects_empty():
