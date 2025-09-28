@@ -7,18 +7,6 @@ env:
   FORCE_COLOR: "1"
 
 jobs:
-  check-format:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.9
-    - uses: pre-commit/action@v3.0.1
-
   test:
     name: "Test - ${{ matrix.os }}, py ${{ matrix.python-version }}, Sphinx ${{ matrix.sphinx }}"
     runs-on: "${{ matrix.os }}-latest"

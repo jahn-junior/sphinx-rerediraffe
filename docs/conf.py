@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 copyright = "2020, FIRST"
 author = "WPILib"
 

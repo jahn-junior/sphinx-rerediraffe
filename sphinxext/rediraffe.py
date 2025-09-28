@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import re
 import subprocess
@@ -59,7 +61,7 @@ def create_graph(path: Path) -> Dict[str, str]:
                 continue
             match = RE_OBJ.fullmatch(line)
 
-            if match == None:
+            if match is None:
                 logger.error(
                     red(f"rediraffe: line {line_num} of the redirects is invalid!")
                 )
@@ -142,7 +144,7 @@ def build_redirects(app: Sphinx, exception: Union[Exception, None]) -> None:
     else:
         redirect_record = {}
 
-    if exception != None:
+    if exception is not None:
         return
 
     if isinstance(app.builder, CheckExternalLinksBuilder):
@@ -226,7 +228,7 @@ def build_redirects(app: Sphinx, exception: Union[Exception, None]) -> None:
         redirect_from = src_redirect_from.parent / f"{redirect_from_name}.html"
         redirect_to = src_redirect_to.parent / f"{redirect_to_name}.html"
 
-        if type(app.builder) == DirectoryHTMLBuilder:
+        if type(app.builder) is DirectoryHTMLBuilder:
             if redirect_from_name != "index":
                 redirect_from = (
                     src_redirect_from.parent / redirect_from_name / "index.html"
@@ -253,14 +255,14 @@ def build_redirects(app: Sphinx, exception: Union[Exception, None]) -> None:
 
         if build_redirect_from.exists():
             logger.warning(
-                f'{yellow("(broken)")} {redirect_from} redirects to {redirect_to} but {build_redirect_from} already exists!'
+                f"{yellow('(broken)')} {redirect_from} redirects to {redirect_to} but {build_redirect_from} already exists!"
             )
             app.statuscode = 1
             continue
 
         if not build_redirect_to.exists():
             logger.warning(
-                f'{yellow("(broken)")} {redirect_from} redirects to {redirect_to} but {build_redirect_to} does not exist!'
+                f"{yellow('(broken)')} {redirect_from} redirects to {redirect_to} but {build_redirect_to} does not exist!"
             )
             app.statuscode = 1
             continue
@@ -283,7 +285,7 @@ def build_redirects(app: Sphinx, exception: Union[Exception, None]) -> None:
                 )
             )
             logger.info(
-                f'{green("(good)")} {redirect_from} {green("-->")} {redirect_to}'
+                f"{green('(good)')} {redirect_from} {green('-->')} {redirect_to}"
             )
             redirect_record[src_redirect_from.as_posix()] = src_redirect_to.as_posix()
 
@@ -354,9 +356,9 @@ class CheckRedirectsDiffBuilder(Builder):
             path_rename_from = abs_path_in_src_dir_w_src_suffix(rename_from)
             path_rename_to = abs_path_in_src_dir_w_src_suffix(rename_to)
 
-            if path_rename_from == None:
+            if path_rename_from is None:
                 continue
-            if path_rename_to == None:
+            if path_rename_to is None:
                 continue
             rename_hints[path_rename_from] = (path_rename_to, perc)
 
@@ -374,7 +376,7 @@ class CheckRedirectsDiffBuilder(Builder):
         deleted_files = [
             abs_path_in_src_dir_w_src_suffix(filename) for filename in deleted_files
         ]
-        deleted_files = list(filter(lambda x: x != None, deleted_files))
+        deleted_files = list(filter(lambda x: x is not None, deleted_files))
 
         for deleted_file in deleted_files:
             if deleted_file in absolute_redirects:
@@ -382,7 +384,7 @@ class CheckRedirectsDiffBuilder(Builder):
                     f"deleted file {deleted_file} redirects to {absolute_redirects[deleted_file]}."
                 )
             else:
-                err_msg = f'{red("(broken)")} {deleted_file} was deleted but is not redirected!'
+                err_msg = f"{red('(broken)')} {deleted_file} was deleted but is not redirected!"
                 logger.error(err_msg)
                 self.app.statuscode = 1
 
