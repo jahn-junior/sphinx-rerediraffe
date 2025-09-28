@@ -41,7 +41,7 @@ jobs:
           enable-cache: false
 
       - name: Install build dependencies (pypa/build, twine)
-        run: uv pip install build twine
+        run: uv pip install --group package
 
       - name: Build distribution
         run: python -m build

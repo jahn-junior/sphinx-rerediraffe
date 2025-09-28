@@ -130,7 +130,7 @@ To run tests:
 1. Install this package
 2. Install test dependencies
     ```bash
-    python -m pip install -r test-requirements.txt
+    python -m pip install --group test
     ```
 3. Navigate to the tests directory and run
     ```bash

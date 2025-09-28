@@ -53,7 +53,7 @@ jobs:
         version: latest
         enable-cache: false
     - name: Install dependencies
-      run: uv pip install build twine
+      run: uv pip install --group package
     - name: Lint with twine
       run: |
         python -m build .

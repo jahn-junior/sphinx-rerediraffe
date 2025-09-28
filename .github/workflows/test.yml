@@ -73,7 +73,7 @@ jobs:
         version: latest
         enable-cache: false
     - name: Install dependencies
-      run: uv pip install . -r test-requirements.txt
+      run: uv pip install . --group test
     - name: Install Sphinx ${{ matrix.sphinx-version }}
       run: uv pip install --upgrade "Sphinx~=${{ matrix.sphinx-version }}.0"
     - name: Find Chrome Location
