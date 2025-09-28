@@ -14,6 +14,8 @@ project = 'sphinxext-rediraffe'
 
 exclude_patterns = ['_build']
 
+nitpicky = True
+
 html_theme = 'furo'
 html_logo = '../assets/rediraffe_logo_128.png'
 
