@@ -13,5 +13,5 @@ html_theme = "basic"
 rediraffe_redirects = "redirects.txt"
 
 rediraffe_branch = subprocess.check_output(
-    f"git -C {Path(__file__).parent} rev-parse HEAD~1", shell=True
+    ("git", "rev-parse", "HEAD~1"), cwd=Path(__file__).parent
 ).decode("utf-8")

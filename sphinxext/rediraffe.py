@@ -337,8 +337,10 @@ class CheckRedirectsDiffBuilder(Builder):
         }
 
         path_to_git_repo = subprocess.check_output(
-            f"git -C {self.app.srcdir} rev-parse --show-toplevel", shell=True
-        ).decode("utf-8")
+            ("git", "rev-parse", "--show-toplevel"),
+            cwd=self.app.srcdir,
+            encoding="utf-8",
+        )
 
         def abs_path_in_src_dir_w_src_suffix(filename: str) -> Path | None:
             abs_path = (Path(path_to_git_repo.strip()) / filename.strip()).resolve()
@@ -349,14 +351,12 @@ class CheckRedirectsDiffBuilder(Builder):
             return abs_path
 
         # run git diff
-        renamed_files_out = (
-            subprocess.check_output(
-                f"git -C {self.app.srcdir} diff --name-status --diff-filter=R {self.app.config.rediraffe_branch}",
-                shell=True,
-            )
-            .decode("utf-8")
-            .splitlines()
-        )
+        cmd = ("git", "diff", "--name-status", "--diff-filter=R")
+        if rediraffe_branch := self.app.config.rediraffe_branch:
+            cmd += (rediraffe_branch.strip(),)
+        renamed_files_out = subprocess.check_output(
+            cmd, cwd=self.app.srcdir, encoding="utf-8"
+        ).splitlines()
 
         rename_hints = {}
         for line in renamed_files_out:
@@ -373,14 +373,12 @@ class CheckRedirectsDiffBuilder(Builder):
             rename_hints[path_rename_from] = (path_rename_to, perc)
 
         # run git diff
-        deleted_files = (
-            subprocess.check_output(
-                f"git -C {self.app.srcdir} diff --diff-filter=D --name-only {self.app.config.rediraffe_branch}",
-                shell=True,
-            )
-            .decode("utf-8")
-            .splitlines()
-        )
+        cmd = ("git", "diff", "--diff-filter=D", "--name-only")
+        if rediraffe_branch := self.app.config.rediraffe_branch:
+            cmd += (rediraffe_branch.strip(),)
+        deleted_files = subprocess.check_output(
+            cmd, cwd=self.app.srcdir, encoding="utf-8"
+        ).splitlines()
 
         # to absolute path + filter out
         deleted_files = [

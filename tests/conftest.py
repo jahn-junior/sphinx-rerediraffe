@@ -78,15 +78,18 @@ def app_init_repo(make_app, app_params):
     print(srcdir)
     src_path = Path(srcdir)
 
-    def git(cmd: str):
+    def git(*cmd: str):
         with suppress(subprocess.CalledProcessError):
             subprocess.check_output(
-                "git"
-                ' -c user.name="sphinxext-linkcheckdiff test runner"'
-                ' -c user.email="NONE"'
-                f" -C {src_path}"
-                f" {cmd}",
-                shell=True,
+                (
+                    "git",
+                    "-c",
+                    'user.name="sphinxext-linkcheckdiff test runner"',
+                    "-c",
+                    'user.email="NONE"',
+                    *cmd,
+                ),
+                cwd=src_path,
             )
 
     git("init")
@@ -122,11 +125,11 @@ def app_init_repo(make_app, app_params):
             new_path = file.parent.parent / file.name
             file.rename(new_path)
 
-        git("add .")
+        git("add", ".")
         for path in src_item_paths:
-            git(f"rm --cached -r {path}")
+            git("rm", "--cached", "-r", path)
 
-        git(f'commit -m "Apply {commit[0]}"')
+        git("commit", "-m", f"Apply {commit[0]}")
 
         delete(src_path / commit[0])
 
