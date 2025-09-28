@@ -1,7 +1,9 @@
 from __future__ import annotations
 
-copyright = "2020, FIRST"
-author = "WPILib"
+copyright = (
+    "2020, FIRST",
+    "2025-%Y, the Sphinx developers",
+)
 
 master_doc = "index"
 project = "sphinxext-rediraffe"

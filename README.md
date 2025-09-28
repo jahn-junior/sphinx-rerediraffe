@@ -1,5 +1,5 @@
 # sphinxext-rediraffe
-![ci](https://github.com/wpilibsuite/sphinxext-rediraffe/workflows/ci/badge.svg)
+![ci](https://github.com/sphinx-doc/sphinxext-rediraffe/workflows/ci/badge.svg)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/format.json)](https://github.com/astral-sh/ruff)
 
 Sphinx Extension to redirect files
