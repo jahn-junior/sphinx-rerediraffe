@@ -17,9 +17,8 @@ from sphinx.util.console import green, red, yellow  # pylint: disable=no-name-in
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
-    from typing import Any
-
     from sphinx.application import Sphinx
+    from sphinx.util.typing import ExtensionMetadata
 
 __version__ = "0.2.7"
 version_info = (0, 2, 7)
@@ -467,7 +466,7 @@ class WriteRedirectsDiffBuilder(CheckRedirectsDiffBuilder):
         super().init()
 
 
-def setup(app: Sphinx) -> dict[str, Any]:
+def setup(app: Sphinx) -> ExtensionMetadata:
     app.add_config_value("rediraffe_redirects", None, None)
     app.add_config_value("rediraffe_branch", "", None)
     app.add_config_value("rediraffe_template", None, None)
@@ -478,6 +477,8 @@ def setup(app: Sphinx) -> dict[str, Any]:
     app.connect("build-finished", build_redirects)
 
     return {
+        "version": __version__,
+        "env_version": 1,
         "parallel_read_safe": True,
         "parallel_write_safe": True,
     }
