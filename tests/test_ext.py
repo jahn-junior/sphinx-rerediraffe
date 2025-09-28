@@ -4,9 +4,8 @@ import shutil
 from pathlib import Path
 
 import pytest
-from conftest import rel2url
+from conftest import TESTS_ROOT, rel2url
 from sphinx.errors import ExtensionError
-from sphinx.testing.path import path
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
@@ -16,7 +15,7 @@ if TYPE_CHECKING:
 
 @pytest.fixture(scope="module")
 def rootdir():
-    return path(__file__).parent.abspath() / "roots/ext"
+    return TESTS_ROOT / "roots" / "ext"
 
 
 class TestExtHtml:

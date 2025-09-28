@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import pytest
-from sphinx.testing.path import path
+from conftest import TESTS_ROOT
 
 
 @pytest.fixture(scope="module")
 def rootdir():
-    return path(__file__).parent.abspath() / "roots" / "builder"
+    return TESTS_ROOT / "roots" / "builder"
 
 
 @pytest.mark.sphinx("rediraffecheckdiff", testroot="file_changed")

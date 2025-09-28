@@ -8,7 +8,16 @@ from contextlib import suppress
 from pathlib import Path
 
 import pytest
+import sphinx
 from seleniumbase import config as sb_config
+
+if sphinx.version_info[:2] >= (7, 2):
+    TESTS_ROOT = Path(__file__).resolve().parent
+else:
+    from sphinx.testing.path import path
+
+    TESTS_ROOT = path(__file__).abspath().parent
+
 
 pytest_plugins = "sphinx.testing.fixtures"
 
@@ -32,7 +41,7 @@ def delete(path: str | Path):
 
 # @pytest.fixture(scope="session")
 # def rootdir():
-#     return path(__file__).parent.abspath() / "roots"
+#     return TESTS_ROOT / "roots"
 
 
 @pytest.fixture
