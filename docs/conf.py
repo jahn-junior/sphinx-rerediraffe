@@ -13,6 +13,11 @@ exclude_patterns = ["_build"]
 html_theme = "furo"
 html_logo = "../assets/rediraffe_logo_128.png"
 
-extensions = ["myst_parser", "sphinxext.rediraffe"]
+extensions = [
+    "sphinxext.rediraffe",
+]
 
-rediraffe_redirects = {"other.md": "index.md", "other2.md": "other.md"}
+rediraffe_redirects = {
+    "other.rst": "index.rst",
+    "other2.rst": "other.rst",
+}

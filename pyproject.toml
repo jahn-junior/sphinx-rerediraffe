@@ -6,7 +6,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "sphinxext-rediraffe"
 description = "Sphinx Extension that redirects non-existent pages to working pages"
-readme = "README.md"
+readme = "README.rst"
 urls.Code = "https://github.com/sphinx-doc/sphinxext-rediraffe/"
 urls.Documentation = "https://sphinxext-rediraffe.readthedocs.io/"
 urls.Download = "https://pypi.org/project/sphinxext-rediraffe/"
@@ -51,7 +51,6 @@ email = "vasistavovveti@gmail.com"
 [dependency-groups]
 docs = [
     "furo==2023.9.10",
-    "myst-parser==2.0.0",
     "sphinx==7.2.6",
 ]
 lint = [
