@@ -49,7 +49,7 @@ def test_create_graph_link_redirected_twice(tmp_path):
         """
     )
     with pytest.raises(ExtensionError):
-        graph = create_graph(path)
+        create_graph(path)
 
 
 def test_create_graph_link_redirected_lots(tmp_path):
@@ -64,7 +64,7 @@ def test_create_graph_link_redirected_lots(tmp_path):
         """
     )
     with pytest.raises(ExtensionError):
-        graph = create_graph(path)
+        create_graph(path)
 
 
 class TestCreateGraphQuotes:

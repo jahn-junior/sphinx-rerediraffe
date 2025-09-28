@@ -3,13 +3,10 @@ from __future__ import annotations
 import json
 import re
 import subprocess
-from os import rename
 from os.path import relpath
-from pathlib import Path, PurePath, PurePosixPath, PureWindowsPath
-from typing import Any, Dict, List, Union
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 from jinja2 import Environment, FileSystemLoader, Template
-from sphinx.application import Sphinx
 from sphinx.builders import Builder
 from sphinx.builders.dirhtml import DirectoryHTMLBuilder
 from sphinx.builders.html import StandaloneHTMLBuilder
@@ -17,6 +14,12 @@ from sphinx.builders.linkcheck import CheckExternalLinksBuilder
 from sphinx.errors import ExtensionError
 from sphinx.util import logging
 from sphinx.util.console import green, red, yellow  # pylint: disable=no-name-in-module
+
+TYPE_CHECKING = False
+if TYPE_CHECKING:
+    from typing import Any
+
+    from sphinx.application import Sphinx
 
 __version__ = "0.2.7"
 version_info = (0, 2, 7)
@@ -48,13 +51,13 @@ RE_OBJ = re.compile(r"(?:(\"|')(.*?)\1|(\S+))\s+(?:(\"|')(.*?)\4|(\S+))")
 READTHEDOCS_BUILDERS = ["readthedocs", "readthedocsdirhtml"]
 
 
-def create_graph(path: Path) -> Dict[str, str]:
+def create_graph(path: Path) -> dict[str, str]:
     """
     Convert a file containing a whitespace delimited edge list (key value pairs) to a dict. Throws error on duplicate keys.
     """
     graph_edges = {}
     broken = False
-    with open(path, "r") as file:
+    with open(path) as file:
         for line_num, line in enumerate(file, start=1):
             line = line.strip()
             if len(line) == 0 or line.startswith("#"):
@@ -80,7 +83,7 @@ def create_graph(path: Path) -> Dict[str, str]:
                 broken = True
             graph_edges[edge_from] = edge_to
     if broken:
-        err_msg = f"rediraffe: Error(s) in parsing the redirects file."
+        err_msg = "rediraffe: Error(s) in parsing the redirects file."
         logger.error(err_msg)
         raise ExtensionError(err_msg)
     return graph_edges
@@ -117,7 +120,7 @@ def create_simple_redirects(graph_edges: dict) -> dict:
 
     if broken_vertices:
         err_msg = (
-            f"rediraffe: At least 1 circular redirect detected. All involved links: "
+            "rediraffe: At least 1 circular redirect detected. All involved links: "
             + ", ".join(broken_vertices)
         )
         logger.error(err_msg)
@@ -126,7 +129,7 @@ def create_simple_redirects(graph_edges: dict) -> dict:
     return redirects
 
 
-def remove_suffix(docname: str, suffixes: List[str]) -> str:
+def remove_suffix(docname: str, suffixes: list[str]) -> str:
     """Remove any known suffixes for a file path."""
     for suffix in suffixes:
         if docname.endswith(suffix):
@@ -134,7 +137,7 @@ def remove_suffix(docname: str, suffixes: List[str]) -> str:
     return docname
 
 
-def build_redirects(app: Sphinx, exception: Union[Exception, None]) -> None:
+def build_redirects(app: Sphinx, exception: Exception | None) -> None:
     """
     Build amd write redirects
     """
@@ -255,14 +258,22 @@ def build_redirects(app: Sphinx, exception: Union[Exception, None]) -> None:
 
         if build_redirect_from.exists():
             logger.warning(
-                f"{yellow('(broken)')} {redirect_from} redirects to {redirect_to} but {build_redirect_from} already exists!"
+                "%s %s redirects to %s but %s already exists!",
+                yellow("(broken)"),
+                redirect_from,
+                redirect_to,
+                build_redirect_from,
             )
             app.statuscode = 1
             continue
 
         if not build_redirect_to.exists():
             logger.warning(
-                f"{yellow('(broken)')} {redirect_from} redirects to {redirect_to} but {build_redirect_to} does not exist!"
+                "%s %s redirects to %s but %s does not exist!",
+                yellow("(broken)"),
+                redirect_from,
+                redirect_to,
+                build_redirect_to,
             )
             app.statuscode = 1
             continue
@@ -285,7 +296,7 @@ def build_redirects(app: Sphinx, exception: Union[Exception, None]) -> None:
                 )
             )
             logger.info(
-                f"{green('(good)')} {redirect_from} {green('-->')} {redirect_to}"
+                "%s %s %s %s", green("(good)"), redirect_from, green("-->"), redirect_to
             )
             redirect_record[src_redirect_from.as_posix()] = src_redirect_to.as_posix()
 
@@ -313,7 +324,7 @@ class CheckRedirectsDiffBuilder(Builder):
                 return
             try:
                 rediraffe_redirects = create_graph(redirects_path)
-            except ExtensionError as e:
+            except ExtensionError:
                 self.app.statuscode = 1
                 return
         else:
@@ -330,7 +341,7 @@ class CheckRedirectsDiffBuilder(Builder):
             f"git -C {self.app.srcdir} rev-parse --show-toplevel", shell=True
         ).decode("utf-8")
 
-        def abs_path_in_src_dir_w_src_suffix(filename: str) -> Union[Path, None]:
+        def abs_path_in_src_dir_w_src_suffix(filename: str) -> Path | None:
             abs_path = (Path(path_to_git_repo.strip()) / filename.strip()).resolve()
             if not str(abs_path).startswith(str(src_path)):
                 return None
@@ -381,7 +392,9 @@ class CheckRedirectsDiffBuilder(Builder):
         for deleted_file in deleted_files:
             if deleted_file in absolute_redirects:
                 logger.info(
-                    f"deleted file {deleted_file} redirects to {absolute_redirects[deleted_file]}."
+                    "deleted file %s redirects to %s.",
+                    deleted_file,
+                    absolute_redirects[deleted_file],
                 )
             else:
                 err_msg = f"{red('(broken)')} {deleted_file} was deleted but is not redirected!"
@@ -394,7 +407,9 @@ class CheckRedirectsDiffBuilder(Builder):
 
                 if renamed_file in absolute_redirects:
                     logger.info(
-                        f"renamed file {renamed_file} redirects to {absolute_redirects[renamed_file]}."
+                        "renamed file %s redirects to %s.",
+                        renamed_file,
+                        absolute_redirects[renamed_file],
                     )
                     continue
 
@@ -406,7 +421,10 @@ class CheckRedirectsDiffBuilder(Builder):
                         )
                         redirects_file.write(f"{rel_rename_from} {rel_rename_to}\n")
                         logger.info(
-                            f"{green('(okay)')} Renamed file {rel_rename_from} has been redirected to {rel_rename_to} in your redirects file!"
+                            "%s Renamed file %s has been redirected to %s in your redirects file!",
+                            green("(okay)"),
+                            rel_rename_from,
+                            rel_rename_to,
                         )
                         continue
 
@@ -440,7 +458,8 @@ class WriteRedirectsDiffBuilder(CheckRedirectsDiffBuilder):
         rediraffe_redirects = self.app.config.rediraffe_redirects
         if not isinstance(rediraffe_redirects, str):
             logger.error(
-                f"{red('(broken)')} Automatic redirects is only available with a redirects file."
+                "%s Automatic redirects is only available with a redirects file.",
+                red("(broken)"),
             )
             self.app.statuscode = 1
             return
@@ -448,7 +467,7 @@ class WriteRedirectsDiffBuilder(CheckRedirectsDiffBuilder):
         super().init()
 
 
-def setup(app: Sphinx) -> Dict[str, Any]:
+def setup(app: Sphinx) -> dict[str, Any]:
     app.add_config_value("rediraffe_redirects", None, None)
     app.add_config_value("rediraffe_branch", "", None)
     app.add_config_value("rediraffe_template", None, None)

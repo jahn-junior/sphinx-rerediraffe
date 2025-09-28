@@ -1,16 +1,17 @@
 from __future__ import annotations
 
-import logging
 import shutil
 from pathlib import Path
 
 import pytest
-import seleniumbase
 from conftest import rel2url
-from seleniumbase import BaseCase
-from sphinx.application import Sphinx
 from sphinx.errors import ExtensionError
 from sphinx.testing.path import path
+
+TYPE_CHECKING = False
+if TYPE_CHECKING:
+    from seleniumbase import BaseCase
+    from sphinx.application import Sphinx
 
 
 @pytest.fixture(scope="module")
@@ -198,12 +199,12 @@ class TestExtHtml:
         ensure_redirect("F5/F4/F3/F2/F1/1.html", "index.html")
 
     @pytest.mark.sphinx("html", testroot="jinja")
-    def test_jinja(self, app: Sphinx, _sb: BaseCase):
+    def test_jinja(self, app: Sphinx, sb_: BaseCase):
         app.build()
         assert app.statuscode == 0
 
-        _sb.open(rel2url(app.outdir, "another.html"))
-        text = _sb.get_text(selector="html")
+        sb_.open(rel2url(app.outdir, "another.html"))
+        text = sb_.get_text(selector="html")
         text = text.replace("\\", "/")
         text = text.replace("//", "/")
 
@@ -221,53 +222,53 @@ class TestExtHtml:
         ensure_redirect("another.html", "index.html")
 
     @pytest.mark.sphinx("html", testroot="pass_url_fragments_queries")
-    def test_pass_url_fragments(self, app: Sphinx, _sb: BaseCase, ensure_redirect):
+    def test_pass_url_fragments(self, app: Sphinx, sb_: BaseCase, ensure_redirect):
         app.build()
 
         ensure_redirect("another.html", "index.html")
-        _sb.open(rel2url(app.outdir, "another.html") + "#haha")
+        sb_.open(rel2url(app.outdir, "another.html") + "#haha")
         # check url
         assert Path(rel2url(app.outdir, "index.html")) == Path(
-            _sb.execute_script(
+            sb_.execute_script(
                 'return  window.location.protocol + "//" + window.location.host + "/" + window.location.pathname'
             )
         )
         # check hash
-        assert "#haha" == _sb.execute_script("return window.location.hash")
+        assert "#haha" == sb_.execute_script("return window.location.hash")
 
     @pytest.mark.sphinx("html", testroot="pass_url_fragments_queries")
-    def test_pass_url_queries(self, app: Sphinx, _sb: BaseCase, ensure_redirect):
+    def test_pass_url_queries(self, app: Sphinx, sb_: BaseCase, ensure_redirect):
         app.build()
 
         ensure_redirect("another.html", "index.html")
-        _sb.open(rel2url(app.outdir, "another.html") + "?phrase=haha")
+        sb_.open(rel2url(app.outdir, "another.html") + "?phrase=haha")
         # check url
         assert Path(rel2url(app.outdir, "index.html")) == Path(
-            _sb.execute_script(
+            sb_.execute_script(
                 'return window.location.protocol + "//" + window.location.host + "/" + window.location.pathname'
             )
         )
         # check query
-        assert "?phrase=haha" == _sb.execute_script("return window.location.search")
+        assert "?phrase=haha" == sb_.execute_script("return window.location.search")
 
     @pytest.mark.sphinx("html", testroot="pass_url_fragments_queries")
     def test_pass_url_fragment_and_query(
-        self, app: Sphinx, _sb: BaseCase, ensure_redirect
+        self, app: Sphinx, sb_: BaseCase, ensure_redirect
     ):
         app.build()
 
         ensure_redirect("another.html", "index.html")
-        _sb.open(rel2url(app.outdir, "another.html") + "?phrase=haha#giraffe")
+        sb_.open(rel2url(app.outdir, "another.html") + "?phrase=haha#giraffe")
         # check url
         assert Path(rel2url(app.outdir, "index.html")) == Path(
-            _sb.execute_script(
+            sb_.execute_script(
                 'return window.location.protocol + "//" + window.location.host + "/" + window.location.pathname'
             )
         )
         # check query
-        assert "?phrase=haha" == _sb.execute_script("return window.location.search")
+        assert "?phrase=haha" == sb_.execute_script("return window.location.search")
         # check hash
-        assert "#giraffe" == _sb.execute_script("return window.location.hash")
+        assert "#giraffe" == sb_.execute_script("return window.location.hash")
 
 
 class TestExtDirHtml:
@@ -456,12 +457,12 @@ class TestExtDirHtml:
         ensure_redirect("F5/F4/F3/F2/F1/1/index.html", "index.html")
 
     @pytest.mark.sphinx("dirhtml", testroot="jinja")
-    def test_jinja(self, app: Sphinx, _sb: BaseCase):
+    def test_jinja(self, app: Sphinx, sb_: BaseCase):
         app.build()
         assert app.statuscode == 0
 
-        _sb.open(rel2url(app.outdir, "another/index.html"))
-        text = _sb.get_text(selector="html")
+        sb_.open(rel2url(app.outdir, "another/index.html"))
+        text = sb_.get_text(selector="html")
         text = text.replace("\\", "/")
         text = text.replace("//", "/")
 
@@ -479,50 +480,50 @@ class TestExtDirHtml:
         ensure_redirect("another/index.html", "index.html")
 
     @pytest.mark.sphinx("dirhtml", testroot="pass_url_fragments_queries")
-    def test_pass_url_fragments(self, app: Sphinx, _sb: BaseCase, ensure_redirect):
+    def test_pass_url_fragments(self, app: Sphinx, sb_: BaseCase, ensure_redirect):
         app.build()
 
         ensure_redirect("another/index.html", "index.html")
-        _sb.open(rel2url(app.outdir, "another/index.html") + "#haha")
+        sb_.open(rel2url(app.outdir, "another/index.html") + "#haha")
         # check url
         assert Path(rel2url(app.outdir, "index.html")) == Path(
-            _sb.execute_script(
+            sb_.execute_script(
                 'return  window.location.protocol + "//" + window.location.host + "/" + window.location.pathname'
             )
         )
         # check hash
-        assert "#haha" == _sb.execute_script("return window.location.hash")
+        assert "#haha" == sb_.execute_script("return window.location.hash")
 
     @pytest.mark.sphinx("dirhtml", testroot="pass_url_fragments_queries")
-    def test_pass_url_queries(self, app: Sphinx, _sb: BaseCase, ensure_redirect):
+    def test_pass_url_queries(self, app: Sphinx, sb_: BaseCase, ensure_redirect):
         app.build()
 
         ensure_redirect("another/index.html", "index.html")
-        _sb.open(rel2url(app.outdir, "another/index.html") + "?phrase=haha")
+        sb_.open(rel2url(app.outdir, "another/index.html") + "?phrase=haha")
         # check url
         assert Path(rel2url(app.outdir, "index.html")) == Path(
-            _sb.execute_script(
+            sb_.execute_script(
                 'return window.location.protocol + "//" + window.location.host + "/" + window.location.pathname'
             )
         )
         # check query
-        assert "?phrase=haha" == _sb.execute_script("return window.location.search")
+        assert "?phrase=haha" == sb_.execute_script("return window.location.search")
 
     @pytest.mark.sphinx("dirhtml", testroot="pass_url_fragments_queries")
     def test_pass_url_fragment_and_query(
-        self, app: Sphinx, _sb: BaseCase, ensure_redirect
+        self, app: Sphinx, sb_: BaseCase, ensure_redirect
     ):
         app.build()
 
         ensure_redirect("another/index.html", "index.html")
-        _sb.open(rel2url(app.outdir, "another/index.html") + "?phrase=haha#giraffe")
+        sb_.open(rel2url(app.outdir, "another/index.html") + "?phrase=haha#giraffe")
         # check url
         assert Path(rel2url(app.outdir, "index.html")) == Path(
-            _sb.execute_script(
+            sb_.execute_script(
                 'return window.location.protocol + "//" + window.location.host + "/" + window.location.pathname'
             )
         )
         # check query
-        assert "?phrase=haha" == _sb.execute_script("return window.location.search")
+        assert "?phrase=haha" == sb_.execute_script("return window.location.search")
         # check hash
-        assert "#giraffe" == _sb.execute_script("return window.location.hash")
+        assert "#giraffe" == sb_.execute_script("return window.location.hash")

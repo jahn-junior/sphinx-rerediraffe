@@ -6,11 +6,9 @@ import stat
 import subprocess
 from contextlib import suppress
 from pathlib import Path
-from typing import Dict, List, Union
 
 import pytest
 from seleniumbase import config as sb_config
-from sphinx.testing.path import path
 
 pytest_plugins = "sphinx.testing.fixtures"
 
@@ -20,7 +18,7 @@ def del_rw(action, name, exc):
     os.remove(name)
 
 
-def delete(path: Union[str, Path]):
+def delete(path: str | Path):
     path = Path(path).resolve()
     if path.exists():
         if path.is_dir():
@@ -37,18 +35,18 @@ def delete(path: Union[str, Path]):
 #     return path(__file__).parent.abspath() / "roots"
 
 
-@pytest.fixture()
+@pytest.fixture
 def content(app):
     app.build()
-    yield app
+    return app
 
 
-@pytest.fixture()
+@pytest.fixture
 def outdir(app):
     return app.outdir
 
 
-@pytest.fixture()
+@pytest.fixture
 def app_init_repo(make_app, app_params):
     """
     Initializes a git repo before returning the app.
@@ -144,17 +142,17 @@ def rel2url(outdir, path):
 
 
 @pytest.fixture(scope="session")
-def _sb(request):
+def sb_(request):
     """Same as the sb fixture but with a session scope"""
     from seleniumbase import BaseCase
 
     class BaseClass(BaseCase):
         def setUp(self):
-            super(BaseClass, self).setUp()
+            super().setUp()
 
         def tearDown(self):
             self.save_teardown_screenshot()
-            super(BaseClass, self).tearDown()
+            super().tearDown()
 
         def base_method(self):
             pass
@@ -169,14 +167,14 @@ def _sb(request):
         sb._needs_tearDown = False
 
 
-@pytest.fixture()
-def ensure_redirect(outdir, _sb):
+@pytest.fixture
+def ensure_redirect(outdir, sb_):
     # outdir = app.outdir
     def _ensure_redirect(before: str, expected_after: str):
         before_url = rel2url(outdir, before)
-        _sb.open(before_url)
+        sb_.open(before_url)
         expected_after_path = Path(rel2url(outdir, expected_after))
-        actual_after_path = Path(_sb.get_current_url())
+        actual_after_path = Path(sb_.get_current_url())
         assert actual_after_path == expected_after_path
 
     return _ensure_redirect
