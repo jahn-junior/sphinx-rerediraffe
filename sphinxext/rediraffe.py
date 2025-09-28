@@ -56,31 +56,32 @@ def create_graph(path: Path) -> dict[str, str]:
     """
     graph_edges = {}
     broken = False
-    with open(path) as file:
-        for line_num, line in enumerate(file, start=1):
-            line = line.strip()
-            if len(line) == 0 or line.startswith('#'):
-                continue
-            match = RE_OBJ.fullmatch(line)
+    with path.open(encoding='utf-8') as file:
+        lines = file.readlines()
+    for line_num, line in enumerate(lines, start=1):
+        line = line.strip()
+        if len(line) == 0 or line.startswith('#'):
+            continue
+        match = RE_OBJ.fullmatch(line)
 
-            if match is None:
-                logger.error(
-                    red(f'rediraffe: line {line_num} of the redirects is invalid!')
-                )
-                broken = True
-                continue
+        if match is None:
+            logger.error(
+                red(f'rediraffe: line {line_num} of the redirects is invalid!')
+            )
+            broken = True
+            continue
 
-            edge_from = match.group(2) or match.group(3)
-            edge_to = match.group(5) or match.group(6)
-            if edge_from in graph_edges:
-                # Duplicate vertices not allowed / Vertices can only have 1 outgoing edge
-                logger.error(
-                    red(
-                        f'rediraffe: {edge_from} is redirected multiple times in the rediraffe_redirects file!'
-                    )
+        edge_from = match.group(2) or match.group(3)
+        edge_to = match.group(5) or match.group(6)
+        if edge_from in graph_edges:
+            # Duplicate vertices not allowed / Vertices can only have 1 outgoing edge
+            logger.error(
+                red(
+                    f'rediraffe: {edge_from} is redirected multiple times in the rediraffe_redirects file!'
                 )
-                broken = True
-            graph_edges[edge_from] = edge_to
+            )
+            broken = True
+        graph_edges[edge_from] = edge_to
     if broken:
         err_msg = 'rediraffe: Error(s) in parsing the redirects file.'
         logger.error(err_msg)
@@ -142,7 +143,7 @@ def build_redirects(app: Sphinx, exception: Exception | None) -> None:
     """
     redirect_json_file = Path(app.outdir) / REDIRECT_JSON_NAME
     if redirect_json_file.exists():
-        redirect_record = json.loads(redirect_json_file.read_text('utf8'))
+        redirect_record = json.loads(redirect_json_file.read_bytes())
     else:
         redirect_record = {}
 
@@ -278,7 +279,7 @@ def build_redirects(app: Sphinx, exception: Exception | None) -> None:
             continue
 
         build_redirect_from.parent.mkdir(parents=True, exist_ok=True)
-        with build_redirect_from.open('w') as f:
+        with build_redirect_from.open('w', encoding='utf-8') as f:
             f.write(
                 rediraffe_template.render(
                     rel_url=str(
@@ -398,7 +399,7 @@ class CheckRedirectsDiffBuilder(Builder):
                 logger.error(err_msg)
                 self.app.statuscode = 1
 
-        with redirects_path.open('a') as redirects_file:
+        with redirects_path.open('a', encoding='utf-8') as redirects_file:
             for renamed_file in rename_hints:
                 hint_to, perc = rename_hints[renamed_file]
 

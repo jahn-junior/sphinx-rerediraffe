@@ -19,7 +19,7 @@ else:
     TESTS_ROOT = path(__file__).abspath().parent
 
 
-pytest_plugins = 'sphinx.testing.fixtures'
+pytest_plugins = ['sphinx.testing.fixtures']
 
 
 def del_rw(action, name, exc):

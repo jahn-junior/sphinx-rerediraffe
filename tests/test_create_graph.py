@@ -13,7 +13,8 @@ def test_create_graph(tmp_path):
         a b
         c d
         d e
-        """
+        """,
+        encoding='utf-8',
     )
     graph = create_graph(path)
     assert graph == {
@@ -30,7 +31,8 @@ def test_create_graph_spacing(tmp_path):
         a  b
         c d
         d            e
-        """
+        """,
+        encoding='utf-8',
     )
     graph = create_graph(path)
     assert graph == {
@@ -46,7 +48,8 @@ def test_create_graph_link_redirected_twice(tmp_path):
         """
         a b
         a c
-        """
+        """,
+        encoding='utf-8',
     )
     with pytest.raises(ExtensionError):
         create_graph(path)
@@ -61,7 +64,8 @@ def test_create_graph_link_redirected_lots(tmp_path):
         a c
         d e
         a q
-        """
+        """,
+        encoding='utf-8',
     )
     with pytest.raises(ExtensionError):
         create_graph(path)
@@ -75,7 +79,8 @@ class TestCreateGraphQuotes:
             a b
             c d
             d e
-            """
+            """,
+            encoding='utf-8',
         )
         graph = create_graph(path)
         assert graph == {
@@ -91,7 +96,8 @@ class TestCreateGraphQuotes:
             'a' b
             c 'd'
             d e
-            """
+            """,
+            encoding='utf-8',
         )
         graph = create_graph(path)
         assert graph == {
@@ -107,7 +113,8 @@ class TestCreateGraphQuotes:
             'a' 'b'
             'c' 'd'
             d e
-            """
+            """,
+            encoding='utf-8',
         )
         graph = create_graph(path)
         assert graph == {
@@ -125,7 +132,8 @@ class TestCreateGraphQuotes:
             c d
             # another comment
             d e
-            """
+            """,
+            encoding='utf-8',
         )
         graph = create_graph(path)
         assert graph == {
@@ -141,7 +149,8 @@ class TestCreateGraphQuotes:
             "a" b
             c "d"
             d e
-            """
+            """,
+            encoding='utf-8',
         )
         graph = create_graph(path)
         assert graph == {
@@ -157,7 +166,8 @@ class TestCreateGraphQuotes:
             "a" "b"
             "c" "d"
             d e
-            """
+            """,
+            encoding='utf-8',
         )
         graph = create_graph(path)
         assert graph == {
@@ -174,7 +184,8 @@ class TestCreateGraphQuotes:
             c d'
             d "e
             "e' f'"
-            """
+            """,
+            encoding='utf-8',
         )
         graph = create_graph(path)
         assert graph == {
@@ -193,7 +204,8 @@ class TestCreateGraphQuotes:
             'Store's Contents' other
             "quoteskept' "other"
             ""I'm ready! I'm ready!" - Spongebob Squarepants.rst" "just why?.rst"
-            """
+            """,
+            encoding='utf-8',
         )
         graph = create_graph(path)
         assert graph == {
