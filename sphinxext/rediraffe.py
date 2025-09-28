@@ -399,39 +399,41 @@ class CheckRedirectsDiffBuilder(Builder):
                 logger.error(err_msg)
                 self.app.statuscode = 1
 
-        with redirects_path.open('a', encoding='utf-8') as redirects_file:
-            for renamed_file in rename_hints:
-                hint_to, perc = rename_hints[renamed_file]
+        for renamed_file in rename_hints:
+            hint_to, perc = rename_hints[renamed_file]
 
-                if renamed_file in absolute_redirects:
+            if renamed_file in absolute_redirects:
+                logger.info(
+                    'renamed file %s redirects to %s.',
+                    renamed_file,
+                    absolute_redirects[renamed_file],
+                )
+                continue
+
+            if self.name == 'rediraffewritediff':
+                if perc >= self.app.config.rediraffe_auto_redirect_perc:
+                    rel_rename_from = (
+                        f'"{str(PurePosixPath(renamed_file.relative_to(src_path)))}"'
+                    )
+                    rel_rename_to = (
+                        f'"{str(PurePosixPath(hint_to.relative_to(src_path)))}"'
+                    )
+                    with redirects_path.open('a', encoding='utf-8') as redirects_file:
+                        redirects_file.write(f'{rel_rename_from} {rel_rename_to}\n')
                     logger.info(
-                        'renamed file %s redirects to %s.',
-                        renamed_file,
-                        absolute_redirects[renamed_file],
+                        '%s Renamed file %s has been redirected to %s in your redirects file!',
+                        green('(okay)'),
+                        rel_rename_from,
+                        rel_rename_to,
                     )
                     continue
 
-                if self.name == 'rediraffewritediff':
-                    if perc >= self.app.config.rediraffe_auto_redirect_perc:
-                        rel_rename_from = f'"{str(PurePosixPath(renamed_file.relative_to(src_path)))}"'
-                        rel_rename_to = (
-                            f'"{str(PurePosixPath(hint_to.relative_to(src_path)))}"'
-                        )
-                        redirects_file.write(f'{rel_rename_from} {rel_rename_to}\n')
-                        logger.info(
-                            '%s Renamed file %s has been redirected to %s in your redirects file!',
-                            green('(okay)'),
-                            rel_rename_from,
-                            rel_rename_to,
-                        )
-                        continue
-
-                err_msg = (
-                    f'{red("(broken)")} {renamed_file} was deleted but is not redirected!'
-                    f' Hint: This file was renamed to {hint_to} with a similarity of {perc}%.'
-                )
-                logger.error(err_msg)
-                self.app.statuscode = 1
+            err_msg = (
+                f'{red("(broken)")} {renamed_file} was deleted but is not redirected!'
+                f' Hint: This file was renamed to {hint_to} with a similarity of {perc}%.'
+            )
+            logger.error(err_msg)
+            self.app.statuscode = 1
 
     def get_outdated_docs(self):
         return []
