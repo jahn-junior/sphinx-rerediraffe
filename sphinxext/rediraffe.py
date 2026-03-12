@@ -240,7 +240,7 @@ def build_redirects(app: Sphinx, exception: Exception | None) -> None:
                 redirect_to = (
                     src_redirect_to.parent / redirect_to_name
                     if app.config.rediraffe_dir_only
-                    else src_redirect_to.parent / redirect_to_name / "index.html"
+                    else src_redirect_to.parent / redirect_to_name / 'index.html'
                 )
 
         # absolute paths into the build dir
