@@ -51,7 +51,7 @@ dynamic = ["version"]
 [dependency-groups]
 docs = [
     "furo>=2024",
-    "sphinx==8.2.3",
+    "sphinx==8.1.2",
 ]
 lint = [
     "ruff==0.13.2",
