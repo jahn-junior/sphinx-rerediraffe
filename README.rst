@@ -8,12 +8,12 @@
 sphinx-rerediraffe
 ==================
 
-.. image:: https://img.shields.io/pypi/v/sphinxext-rediraffe.svg
-   :target: https://pypi.org/project/sphinxext-rediraffe/
+.. image:: https://img.shields.io/pypi/v/sphinx-rerediraffe.svg
+   :target: https://pypi.org/project/sphinx-rerediraffe/
    :alt: Package on PyPI
 
-.. image:: https://github.com/sphinx-doc/sphinxext-rediraffe/actions/workflows/test.yml/badge.svg
-   :target: https://github.com/sphinx-doc/sphinxext-rediraffe/actions
+.. image:: https://github.com/sphinx-doc/sphinx-rerediraffe/actions/workflows/test.yml/badge.svg
+   :target: https://github.com/sphinx-doc/sphinx-rerediraffe/actions
    :alt: Build Status
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
