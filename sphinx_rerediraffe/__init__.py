@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from sphinx.application import Sphinx
     from sphinx.util.typing import ExtensionMetadata
 
-__version__ = '0.0.1'
+__version__ = '0.0.3'
 
 def setup(app: Sphinx) -> ExtensionMetadata:
     app.add_config_value('rediraffe_redirects', None, None)
