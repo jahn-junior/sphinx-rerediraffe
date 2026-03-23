@@ -17,8 +17,10 @@ from sphinx.util.console import green, red, yellow  # pylint: disable=no-name-in
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
-    from sphinx.application import Sphinx
     from os import PathLike
+
+    from sphinx.application import Sphinx
+
 
 logger = logging.getLogger(__name__)
 

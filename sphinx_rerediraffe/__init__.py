@@ -1,6 +1,13 @@
-from sphinx.util.typing import ExtensionMetadata
+from __future__ import annotations
+
 from sphinx.application import Sphinx
-from sphinx_rerediraffe.callback import CheckRedirectsDiffBuilder, WriteRedirectsDiffBuilder, build_redirects
+from sphinx.util.typing import ExtensionMetadata
+from sphinx_rerediraffe.callback import (
+    CheckRedirectsDiffBuilder,
+    WriteRedirectsDiffBuilder,
+    build_redirects,
+)
+
 
 __version__ = '0.0.1'
 
