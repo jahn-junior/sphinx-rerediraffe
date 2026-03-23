@@ -2,7 +2,7 @@ from sphinx.util.typing import ExtensionMetadata
 from sphinx.application import Sphinx
 from sphinx_rerediraffe.callback import CheckRedirectsDiffBuilder, WriteRedirectsDiffBuilder, build_redirects
 
-__version__ = '0.0.1
+__version__ = '0.0.1'
 
 def setup(app: Sphinx) -> ExtensionMetadata:
     app.add_config_value('rediraffe_redirects', None, None)

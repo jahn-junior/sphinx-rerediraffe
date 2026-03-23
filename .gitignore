@@ -222,4 +222,7 @@ $RECYCLE.BIN/
 # VS Code config
 .vscode/
 
+# Self-hosted runner
+actions-runner/
+
 # End of https://www.toptal.com/developers/gitignore/api/python,linux,windows,macos,visualstudiocode
