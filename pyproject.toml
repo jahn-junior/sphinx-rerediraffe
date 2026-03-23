@@ -4,19 +4,23 @@ build-backend = "flit_core.buildapi"
 
 # project metadata
 [project]
-name = "sphinxext-rediraffe"
+name = "sphinx-rerediraffe"
 description = "Sphinx Extension that redirects non-existent pages to working pages"
 readme = "README.rst"
-urls.Code = "https://github.com/sphinx-doc/sphinxext-rediraffe/"
+urls.Code = "https://github.com/jahn-junior/sphinx-rerediraffe/"
 urls.Documentation = "https://sphinxext-rediraffe.readthedocs.io/"
-urls.Download = "https://pypi.org/project/sphinxext-rediraffe/"
-urls.Homepage = "https://github.com/sphinx-doc/sphinxext-rediraffe/"
+urls.Download = "https://pypi.org/project/sphinx-rerediraffe/"
+urls.Homepage = "https://github.com/sphinx-doc/sphinx-rerediraffe/"
 urls."Issue tracker" = "https://github.com/sphinx-doc/sphinxext-rediraffe/issues"
 license = "MIT"
 license-files = [
     "LICENCE.rst",
 ]
 requires-python = ">=3.9"
+authors = [
+    {name = "Vasista Vovveti", email = "vasistavovveti@gmail.com"},
+    {name = "JJ Coldiron", email = "jj.coldiron@canonical.com"},
+]
 
 # Classifiers list: https://pypi.org/classifiers/
 classifiers = [
@@ -44,10 +48,6 @@ dependencies = [
 ]
 dynamic = ["version"]
 
-[[project.authors]]
-name = "Vasista Vovveti"
-email = "vasistavovveti@gmail.com"
-
 [dependency-groups]
 docs = [
     "furo>=2024",
@@ -68,7 +68,7 @@ test = [
 ]
 
 [tool.flit.module]
-name = "sphinxext.rediraffe"
+name = "sphinx-rerediraffe"
 
 [tool.flit.sdist]
 include = [

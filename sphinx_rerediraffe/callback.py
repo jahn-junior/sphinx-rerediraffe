@@ -19,12 +19,6 @@ TYPE_CHECKING = False
 if TYPE_CHECKING:
     from os import PathLike
 
-    from sphinx.application import Sphinx
-    from sphinx.util.typing import ExtensionMetadata
-
-__version__ = '0.3.0'
-version_info = (0, 3, 0)
-
 logger = logging.getLogger(__name__)
 
 DEFAULT_REDIRAFFE_TEMPLATE = Template(
@@ -531,22 +525,3 @@ class WriteRedirectsDiffBuilder(CheckRedirectsDiffBuilder):
             return
 
         super().init()
-
-
-def setup(app: Sphinx) -> ExtensionMetadata:
-    app.add_config_value('rediraffe_redirects', None, None)
-    app.add_config_value('rediraffe_branch', '', None)
-    app.add_config_value('rediraffe_template', None, None)
-    app.add_config_value('rediraffe_auto_redirect_perc', 100, None)
-    app.add_config_value('rediraffe_dir_only', False, 'env')
-
-    app.add_builder(CheckRedirectsDiffBuilder)
-    app.add_builder(WriteRedirectsDiffBuilder)
-    app.connect('build-finished', build_redirects)
-
-    return {
-        'version': __version__,
-        'env_version': 1,
-        'parallel_read_safe': True,
-        'parallel_write_safe': True,
-    }

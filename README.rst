@@ -1,6 +1,13 @@
-===================
-sphinxext-rediraffe
-===================
+==================
+sphinx-rerediraffe
+==================
+
+    The sphinx-rerediraffe fork was published as a **temporary solution**. The changes
+    it introduces have already been proposed upstream
+    (`sphinx-doc/sphinxext-rediraffe#67
+    <https://github.com/sphinx-doc/sphinxext-rediraffe/pull/67>`__,
+    `sphinx-doc/sphinxext-rediraffe#68
+    <https://github.com/sphinx-doc/sphinxext-rediraffe/pull/68>`__).
 
 .. image:: https://img.shields.io/pypi/v/sphinxext-rediraffe.svg
    :target: https://pypi.org/project/sphinxext-rediraffe/
@@ -37,7 +44,7 @@ Installation
 
 .. code-block:: sh
 
-   python -m pip install sphinxext-rediraffe
+   pip install sphinx-rerediraffe
 
 Usage
 =====

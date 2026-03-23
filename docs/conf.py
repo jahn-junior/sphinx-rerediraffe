@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-import sphinxext.rediraffe
+import sphinx_rerediraffe
 
 copyright = (
     '2020, FIRST',
     '2025-%Y, the Sphinx developers',
 )
 
-version = release = sphinxext.rediraffe.__version__
+version = release = sphinx_rerediraffe.__version__
 
 master_doc = 'index'
 project = 'sphinxext-rediraffe'
@@ -21,7 +21,7 @@ html_logo = '../assets/rediraffe_logo_128.png'
 
 extensions = [
     'sphinx.ext.intersphinx',
-    'sphinxext.rediraffe',
+    'sphinx_rerediraffe',
 ]
 
 intersphinx_mapping = {

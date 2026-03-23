@@ -28,12 +28,12 @@ Installation
 Usage
 =====
 
-Just add ``sphinxext.rediraffe`` to the extensions list in :file:`conf.py`,
+Just add ``sphinx_rerediraffe`` to the extensions list in :file:`conf.py`,
 
 .. code-block:: python
 
    extensions = [
-      'sphinxext.rediraffe',
+      'sphinx_rerediraffe',
    ]
 
 and set :confval:`rediraffe_redirects` to a dict or file of redirects.

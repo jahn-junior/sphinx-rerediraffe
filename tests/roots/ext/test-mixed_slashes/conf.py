@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-extensions = ['sphinxext.rediraffe']
+extensions = ['sphinx_rerediraffe']
 
 master_doc = 'index'
 exclude_patterns = ['_build']

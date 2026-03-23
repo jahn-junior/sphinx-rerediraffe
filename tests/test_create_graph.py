@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 from sphinx.errors import ExtensionError
 
-from sphinxext.rediraffe import create_graph
+from sphinx_rerediraffe.callback import create_graph
 
 
 def test_create_graph(tmp_path):

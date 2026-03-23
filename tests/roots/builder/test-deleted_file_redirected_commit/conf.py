@@ -3,7 +3,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-extensions = ['sphinxext.rediraffe']
+extensions = ['sphinx_rerediraffe']
 
 master_doc = 'index'
 exclude_patterns = ['_build']

@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 from sphinx.errors import ExtensionError
 
-from sphinxext.rediraffe import create_simple_redirects
+from sphinx_rerediraffe.callback import create_simple_redirects
 
 
 def test_create_simple_redirects_empty():
