@@ -16,7 +16,7 @@ license = "MIT"
 license-files = [
     "LICENCE.rst",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 authors = [
     {name = "Vasista Vovveti", email = "vasistavovveti@gmail.com"},
     {name = "JJ Coldiron", email = "jj.coldiron@canonical.com"},
