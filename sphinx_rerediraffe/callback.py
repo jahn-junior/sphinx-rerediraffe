@@ -278,8 +278,8 @@ def build_redirects(app: Sphinx, exception: Exception | None) -> None:
             continue
 
         # Normalize path - src_redirect_.* is relative so drive letters aren't an issue.
-        src_redirect_from = Path(PureWindowsPath(src_redirect_from.removeprefix("/")))
-        src_redirect_to = Path(PureWindowsPath(src_redirect_to.removeprefix("/")))
+        src_redirect_from = Path(PureWindowsPath(src_redirect_from.removeprefix('/')))
+        src_redirect_to = Path(PureWindowsPath(src_redirect_to.removeprefix('/')))
 
         # remove extensions
         redirect_from_name = remove_suffix(
