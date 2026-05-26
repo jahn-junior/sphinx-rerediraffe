@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from sphinx_rerediraffe.callback import (
     CheckRedirectsDiffBuilder,
     WriteRedirectsDiffBuilder,
@@ -11,6 +12,7 @@ if TYPE_CHECKING:
     from sphinx.util.typing import ExtensionMetadata
 
 __version__ = '0.0.3'
+
 
 def setup(app: Sphinx) -> ExtensionMetadata:
     app.add_config_value('rediraffe_redirects', None, None)
@@ -29,5 +31,6 @@ def setup(app: Sphinx) -> ExtensionMetadata:
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
+
 
 __all__ = ['__version__', 'setup']
