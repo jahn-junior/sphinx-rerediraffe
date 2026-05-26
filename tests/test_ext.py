@@ -92,6 +92,12 @@ class TestExtHtml:
         ensure_redirect('docs/folder2/toindex.html', 'index.html')
         ensure_redirect('totoindex.html', 'index.html')
 
+    @pytest.mark.sphinx('html', testroot='prefix_slashes')
+    def test_prefix_slashes(self, app: Sphinx, ensure_redirect):
+        app.build()
+        assert app.statuscode == 0
+        ensure_redirect('another.html', 'mypage.html')
+
     @pytest.mark.sphinx('html', testroot='link_redirected_twice')
     def test_link_redirected_twice(self, app: Sphinx):
         with pytest.raises(ExtensionError):
