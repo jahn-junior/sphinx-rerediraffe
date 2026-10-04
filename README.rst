@@ -7,7 +7,7 @@
 
     The features specific to sphinx-rerediraffe are documented in this repository's
     `docs/index.rst
-    <https://github.com/jahn-junior/sphinx-rerediraffe/blob/main/docs/index.rst?plain=1>`
+    <https://github.com/jahn-junior/sphinx-rerediraffe/blob/main/docs/index.rst?plain=1>`__
     file.
 
 sphinx-rerediraffe
