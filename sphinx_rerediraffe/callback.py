@@ -51,7 +51,7 @@ READTHEDOCS_BUILDERS = ['readthedocs', 'readthedocsdirhtml']
 
 def expand_glob(appdir: Path, src_path: str, dest_path: str) -> list[str]:
     if not (
-        dest := appdir / Path(PureWindowsPath(dest_path.removeprefix("/")))
+        dest := appdir / Path(PureWindowsPath(dest_path.removeprefix('/')))
     ).exists():
         logger.warning(
             '%s %s redirects to %s but %s does not exist!',
@@ -63,8 +63,8 @@ def expand_glob(appdir: Path, src_path: str, dest_path: str) -> list[str]:
         return []
 
     return [
-        f"{Path(src_path).parent / file.relative_to(dest)} {file.relative_to(appdir)}"
-        for file in dest.rglob("*")
+        f'{Path(src_path).parent / file.relative_to(dest)} {file.relative_to(appdir)}'
+        for file in dest.rglob('*')
         if file.is_file()
     ]
 
@@ -94,7 +94,7 @@ def create_graph(appdir: Path, path: Path) -> dict[str, str]:
         edge_to = match.group(5) or match.group(6)
 
         # Expand wildcard redirect and add them to the redirect list
-        if edge_from.endswith("*"):
+        if edge_from.endswith('*'):
             lines += expand_glob(appdir, edge_from, edge_to)
             continue
         elif edge_from in graph_edges:
