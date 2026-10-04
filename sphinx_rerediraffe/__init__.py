@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from sphinx.application import Sphinx
     from sphinx.util.typing import ExtensionMetadata
 
-__version__ = '0.0.4'
+__version__ = '0.1.0'
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:
