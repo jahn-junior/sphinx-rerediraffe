@@ -54,9 +54,12 @@ def expand_glob(appdir: Path, src_path: str, dest_path: str) -> list[str]:
         dest := appdir / Path(PureWindowsPath(dest_path.removeprefix("/")))
     ).exists():
         logger.warning(
-            f"{yellow('(broken)')} {src_path} redirects to {dest_path} but {dest_path} does not exist!"
+            '%s %s redirects to %s but %s does not exist!',
+            yellow('(broken)'),
+            redirect_from,
+            redirect_to,
+            redirect_to,
         )
-        app.statuscode = 1
         return []
 
     return [
@@ -93,7 +96,7 @@ def create_graph(appdir: Path, path: Path) -> dict[str, str]:
         # Expand wildcard redirect and add them to the redirect list
         if edge_from.endswith("*"):
             lines += expand_glob(appdir, edge_from, edge_to)
-            continue;
+            continue
         elif edge_from in graph_edges:
             # Duplicate vertices not allowed / Vertices can only have 1 outgoing edge
             logger.error(
