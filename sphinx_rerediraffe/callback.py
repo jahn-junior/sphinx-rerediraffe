@@ -50,6 +50,20 @@ READTHEDOCS_BUILDERS = ['readthedocs', 'readthedocsdirhtml']
 
 
 def expand_glob(appdir: Path, src_path: str, dest_path: str) -> list[str]:
+    """Expand the `*` wildcard into its equivalent file paths.
+
+    Redirects are created for each file in the destination subtree, with the source
+    sharing the same relative path. This is heavy-handed, but without any source files to
+    reference, the behavior can't be any more nuanced.
+
+    Args:
+        appdir (Path): The root directory of the parent Sphinx project.
+        src_path (str): The source path containing the wildcard.
+        dest_path (str): The destination path being redirected to.
+
+    Returns:
+        list[str]: The equivalent redirect lines (e.g., 'src_path/file dest_path/file')
+    """
     if not (
         dest := appdir / Path(PureWindowsPath(dest_path.removeprefix('/')))
     ).exists():
