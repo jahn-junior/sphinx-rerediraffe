@@ -56,9 +56,9 @@ def expand_glob(appdir: Path, src_path: str, dest_path: str) -> list[str]:
         logger.warning(
             '%s %s redirects to %s but %s does not exist!',
             yellow('(broken)'),
-            redirect_from,
-            redirect_to,
-            redirect_to,
+            src_path,
+            dest_path,
+            dest_path,
         )
         return []
 
