@@ -139,6 +139,14 @@ class TestExtHtml:
         ensure_redirect('src/foo.html', 'dest/foo.html')
         ensure_redirect('src/nested/bar.html', 'dest/nested/bar.html')
 
+    @pytest.mark.sphinx('dirhtml', testroot='globbing')
+    def test_globbing_dirhtml(self, app: Sphinx, ensure_redirect):
+        app.build()
+        assert app.statuscode == 0
+        ensure_redirect('src/index.html', 'dest/index.html')
+        ensure_redirect('src/foo/index.html', 'dest/foo/index.html')
+        ensure_redirect('src/nested/bar/index.html', 'dest/nested/bar/index.html')
+
     @pytest.mark.sphinx('html', testroot='no_rediraffe_file')
     def test_no_rediraffe_file(self, app: Sphinx):
         app.build()
