@@ -5,6 +5,11 @@
     `sphinx-doc/sphinxext-rediraffe#68
     <https://github.com/sphinx-doc/sphinxext-rediraffe/pull/68>`__).
 
+    The features specific to sphinx-rerediraffe are documented in this repository's
+    `docs/index.rst
+    <https://github.com/jahn-junior/sphinx-rerediraffe/blob/main/docs/index.rst?plain=1>`
+    file.
+
 sphinx-rerediraffe
 ==================
 

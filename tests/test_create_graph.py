@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 from sphinx.errors import ExtensionError
-
 from sphinx_rerediraffe.callback import create_graph
 
 
@@ -16,7 +17,7 @@ def test_create_graph(tmp_path):
         """,
         encoding='utf-8',
     )
-    graph = create_graph(path)
+    graph = create_graph(Path('tmp'), path)
     assert graph == {
         'a': 'b',
         'c': 'd',
@@ -34,7 +35,7 @@ def test_create_graph_spacing(tmp_path):
         """,
         encoding='utf-8',
     )
-    graph = create_graph(path)
+    graph = create_graph(Path('tmp'), path)
     assert graph == {
         'a': 'b',
         'c': 'd',
@@ -52,7 +53,7 @@ def test_create_graph_link_redirected_twice(tmp_path):
         encoding='utf-8',
     )
     with pytest.raises(ExtensionError):
-        create_graph(path)
+        create_graph(Path('tmp'), path)
 
 
 def test_create_graph_link_redirected_lots(tmp_path):
@@ -68,7 +69,7 @@ def test_create_graph_link_redirected_lots(tmp_path):
         encoding='utf-8',
     )
     with pytest.raises(ExtensionError):
-        create_graph(path)
+        create_graph(Path('tmp'), path)
 
 
 class TestCreateGraphQuotes:
@@ -82,7 +83,7 @@ class TestCreateGraphQuotes:
             """,
             encoding='utf-8',
         )
-        graph = create_graph(path)
+        graph = create_graph(Path('tmp'), path)
         assert graph == {
             'a': 'b',
             'c': 'd',
@@ -99,7 +100,7 @@ class TestCreateGraphQuotes:
             """,
             encoding='utf-8',
         )
-        graph = create_graph(path)
+        graph = create_graph(Path('tmp'), path)
         assert graph == {
             'a': 'b',
             'c': 'd',
@@ -116,7 +117,7 @@ class TestCreateGraphQuotes:
             """,
             encoding='utf-8',
         )
-        graph = create_graph(path)
+        graph = create_graph(Path('tmp'), path)
         assert graph == {
             'a': 'b',
             'c': 'd',
@@ -135,7 +136,7 @@ class TestCreateGraphQuotes:
             """,
             encoding='utf-8',
         )
-        graph = create_graph(path)
+        graph = create_graph(Path('tmp'), path)
         assert graph == {
             'a': 'b',
             'c': 'd',
@@ -152,7 +153,7 @@ class TestCreateGraphQuotes:
             """,
             encoding='utf-8',
         )
-        graph = create_graph(path)
+        graph = create_graph(Path('tmp'), path)
         assert graph == {
             'a': 'b',
             'c': 'd',
@@ -169,7 +170,7 @@ class TestCreateGraphQuotes:
             """,
             encoding='utf-8',
         )
-        graph = create_graph(path)
+        graph = create_graph(Path('tmp'), path)
         assert graph == {
             'a': 'b',
             'c': 'd',
@@ -187,7 +188,7 @@ class TestCreateGraphQuotes:
             """,
             encoding='utf-8',
         )
-        graph = create_graph(path)
+        graph = create_graph(Path('tmp'), path)
         assert graph == {
             '"a': 'b',
             'c': "d'",
@@ -207,7 +208,7 @@ class TestCreateGraphQuotes:
             """,
             encoding='utf-8',
         )
-        graph = create_graph(path)
+        graph = create_graph(Path('tmp'), path)
         assert graph == {
             'Double Quoted Path': 'Single Quoted Path',
             "Website's Contents": 'other',

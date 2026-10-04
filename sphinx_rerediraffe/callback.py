@@ -49,7 +49,41 @@ RE_OBJ = re.compile(r"(?:(\"|')(.*?)\1|(\S+))\s+(?:(\"|')(.*?)\4|(\S+))")
 READTHEDOCS_BUILDERS = ['readthedocs', 'readthedocsdirhtml']
 
 
-def create_graph(path: Path) -> dict[str, str]:
+def expand_glob(appdir: Path, src_path: str, dest_path: str) -> list[str]:
+    """Expand the `*` wildcard into its equivalent file paths.
+
+    Redirects are created for each file in the destination subtree, with the source
+    sharing the same relative path. This is heavy-handed, but without any source files to
+    reference, the behavior can't be any more nuanced.
+
+    Args:
+        appdir (Path): The root directory of the parent Sphinx project.
+        src_path (str): The source path containing the wildcard.
+        dest_path (str): The destination path being redirected to.
+
+    Returns:
+        list[str]: The equivalent redirect lines (e.g., 'src_path/file dest_path/file')
+    """
+    if not (
+        dest := appdir / Path(PureWindowsPath(dest_path.removeprefix('/')))
+    ).exists():
+        logger.warning(
+            '%s %s redirects to %s but %s does not exist!',
+            yellow('(broken)'),
+            src_path,
+            dest_path,
+            dest_path,
+        )
+        return []
+
+    return [
+        f'{Path(src_path).parent / file.relative_to(dest)} {file.relative_to(appdir)}'
+        for file in dest.rglob('*')
+        if file.is_file()
+    ]
+
+
+def create_graph(appdir: Path, path: Path) -> dict[str, str]:
     """
     Convert a file containing a whitespace delimited edge list (key value pairs) to a dict. Throws error on duplicate keys.
     """
@@ -72,7 +106,12 @@ def create_graph(path: Path) -> dict[str, str]:
 
         edge_from = match.group(2) or match.group(3)
         edge_to = match.group(5) or match.group(6)
-        if edge_from in graph_edges:
+
+        # Expand wildcard redirect and add them to the redirect list
+        if edge_from.endswith('*'):
+            lines += expand_glob(appdir, edge_from, edge_to)
+            continue
+        elif edge_from in graph_edges:
             # Duplicate vertices not allowed / Vertices can only have 1 outgoing edge
             logger.error(
                 red(
@@ -246,7 +285,7 @@ def build_redirects(app: Sphinx, exception: Exception | None) -> None:
             return
 
         try:
-            graph_edges = create_graph(path)
+            graph_edges = create_graph(Path(app.srcdir), path)
         except ExtensionError as e:
             app.statuscode = 1
             raise e
@@ -380,13 +419,13 @@ class CheckRedirectsDiffBuilder(Builder):
         if isinstance(rediraffe_redirects, dict):
             pass
         elif isinstance(rediraffe_redirects, str):
-            redirects_path = Path(src_path) / rediraffe_redirects
+            redirects_path = src_path / rediraffe_redirects
             if not redirects_path.is_file():
                 logger.error(red('rediraffe: rediraffe_redirects file does not exist.'))
                 self.app.statuscode = 1
                 return
             try:
-                rediraffe_redirects = create_graph(redirects_path)
+                rediraffe_redirects = create_graph(src_path, redirects_path)
             except ExtensionError:
                 self.app.statuscode = 1
                 return

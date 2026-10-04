@@ -147,6 +147,37 @@ redirects only (file)
 Note: Filepaths can be wrapped in quotes (single or double).
 This is especially useful for filepaths containing spaces.
 
+redirects only (globbing)
+-------------------------
+
+:file:`conf.py`:
+
+.. code-block:: python
+
+   rediraffe_redirects = 'redirects.txt'
+
+:file:`redirects.txt`:
+
+.. code-block:: text
+
+   # redirects can be globbed with the``*`` wildcard.
+   src/* dest/
+
+When the source path is suffixed with the ``*`` wildcard, redirects are created for
+every file in the destination directory. For example, if the ``dest/`` directory
+contains 3 files, ``file1.rst``, ``file2.rst``, and ``nested/file3.rst``, the wildcard
+is equivalent to the following redirects:
+
+.. code-block:: text
+
+   src/file1.rst dest/file1.rst
+   src/file2.rst dest/file2.rst
+   src/nested/file3.rst dest/nested/file3.rst
+
+This is a heavy-handed approach, but it's useful when a directory in the project source
+is moved. If the directory doesn't contain many files or you need more granular control,
+it's recommended that you redirect each file individually, as in the previous example.
+
 redirects only (dict)
 ---------------------
 
