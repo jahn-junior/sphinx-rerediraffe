@@ -63,6 +63,7 @@ def expand_glob(appdir: Path, src_path: str, dest_path: str) -> list[str]:
 
     Returns:
         list[str]: The equivalent redirect lines (e.g., 'src_path/file dest_path/file')
+
     """
     if not (
         dest := appdir / Path(PureWindowsPath(dest_path.removeprefix('/')))
@@ -84,9 +85,7 @@ def expand_glob(appdir: Path, src_path: str, dest_path: str) -> list[str]:
 
 
 def create_graph(appdir: Path, path: Path) -> dict[str, str]:
-    """
-    Convert a file containing a whitespace delimited edge list (key value pairs) to a dict. Throws error on duplicate keys.
-    """
+    """Convert a file containing a whitespace delimited edge list (key value pairs) to a dict. Throws error on duplicate keys."""
     graph_edges = {}
     broken = False
     with path.open(encoding='utf-8') as file:
@@ -111,7 +110,7 @@ def create_graph(appdir: Path, path: Path) -> dict[str, str]:
         if edge_from.endswith('*'):
             lines += expand_glob(appdir, edge_from, edge_to)
             continue
-        elif edge_from in graph_edges:
+        if edge_from in graph_edges:
             # Duplicate vertices not allowed / Vertices can only have 1 outgoing edge
             logger.error(
                 red(
@@ -128,9 +127,7 @@ def create_graph(appdir: Path, path: Path) -> dict[str, str]:
 
 
 def create_simple_redirects(graph_edges: dict) -> dict:
-    """
-    Ensures that a graph is a acyclic and reconnects every vertex to its leaf vertex.
-    """
+    """Ensures that a graph is a acyclic and reconnects every vertex to its leaf vertex."""
     redirects = {}
     broken_vertices = set()
     for vertex in graph_edges:
@@ -188,7 +185,6 @@ def build_external_redirect(
     src_redirect_to: str,
 ):
     """Redirect to an external link."""
-
     src_redirect_from = Path(PureWindowsPath(src_redirect_from))
 
     redirect_from_name = remove_suffix(src_redirect_from.name, app.config.source_suffix)
@@ -225,9 +221,7 @@ def build_external_redirect(
 
 
 def build_redirects(app: Sphinx, exception: Exception | None) -> None:
-    """
-    Build and write redirects
-    """
+    """Build and write redirects"""
     redirect_json_file = Path(app.outdir) / REDIRECT_JSON_NAME
     if redirect_json_file.exists():
         redirect_record = json.loads(redirect_json_file.read_bytes())
